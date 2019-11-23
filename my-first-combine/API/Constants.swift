@@ -11,18 +11,15 @@ import Foundation
 enum Constants {
     case bookList
     
-    static var path: String {
+    var path: String {
         switch self {
-        case .bookList: return "zcdta"
+        case .bookList: return "/zcdta"
         }
     }
     
     static var baseURL: URL {
-        let requestURL = "https://api.myjson.com/bins".asURL!
-        debugPrint("[INFO] url: \(requestURL)")
-        return requestURL
+        return "https://api.myjson.com/bins".asURL!
     }
-    
     static var header: [String: String]? {
         return nil
     }

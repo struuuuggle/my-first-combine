@@ -10,20 +10,14 @@ import Foundation
 import Combine
 
 class BookListViewModel: ObservableObject {
-    @Published var books: [BookListResponse] = .init()
+    typealias Book = BookListResponse
     
+    @Published var books: [Book] = .init()
     var cancellables: Set<AnyCancellable> = []
-//    init() {
-//        URLSession.shared.dataTask(with: BookListRequest.get.asURLRequest) { (data, response, error) in
-//            guard let data = data else { return }
-//            DispatchQueue.main.async {
-//                self.books = try! JSONDecoder().decode([BookListResponse].self, from: data)
-//            }
-//        }.resume()
-//    }
     
     init() {
-        NetworkPublisher.publish(BookListRequest.get)
+        let request = BookListRequest()
+        NetworkPublisher.publish(request)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
                 switch result {
@@ -31,7 +25,8 @@ class BookListViewModel: ObservableObject {
                 case .failure(let e): print("failure", e) // failure
                 }
             }, receiveValue: { value in
-                print("receiveValue", value) // success
+                print("response: ", value) // success
+                self.books = value
             }).store(in: &cancellables)
     }
 }
