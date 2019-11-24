@@ -1,0 +1,15 @@
+name: CI
+
+on: [push] # git push をトリガーとする
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Show Xcode version
+      run: xcodebuild -version
+    - name: Build # シミュレーター向けにビルド
+      run: xcodebuild -sdk iphonesimulator -configuration Debug build
