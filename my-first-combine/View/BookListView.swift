@@ -13,10 +13,15 @@ struct BookListView: View {
     @ObservedObject var bookListVM = BookListViewModel()
     
     var body: some View {
-        ScrollView {
-            Text("ScrollView starts from here")
+        VStack {
+            Button("Fetch book data!") {
+                self.bookListVM.fetchBookList()
+            }
             ForEach(bookListVM.books, id: \.id) { book in
-                Text(book.title)
+                HStack {
+                    Image(systemName: "book")
+                    Text(book.title)
+                }
             }
         }
     }

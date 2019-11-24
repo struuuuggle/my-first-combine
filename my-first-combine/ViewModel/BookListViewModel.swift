@@ -12,20 +12,21 @@ import Combine
 class BookListViewModel: ObservableObject {
     typealias Book = BookListResponse
     
-    @Published var books: [Book] = .init()
+    @Published var books: [Book] = []
     var cancellables: Set<AnyCancellable> = []
     
-    init() {
+    func fetchBookList() {
         let request = BookListRequest()
         NetworkPublisher.publish(request)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
                 switch result {
-                case .finished: print("finished")
-                case .failure(let e): print("failure", e) // failure
+                case .finished: debugPrint("Finished fechting")
+                case .failure(let e): debugPrint("Fetching failure", e)
                 }
             }, receiveValue: { value in
-                print("response: ", value) // success
+                // in case the request succeeds
+                debugPrint("response: ", value)
                 self.books = value
             }).store(in: &cancellables)
     }
