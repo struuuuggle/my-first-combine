@@ -1,6 +1,6 @@
-name: Swift
+name: CI
 
-on: [push]
+on: [push] # git push をトリガーとする
 
 jobs:
   build:
@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Show Xcode version
+      run: xcodebuild -version
+    - name: Build # シミュレーター向けにビルド
+      run: xcodebuild -sdk iphonesimulator -configuration Debug build
